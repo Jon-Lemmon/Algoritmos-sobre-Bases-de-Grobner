@@ -1,0 +1,28 @@
+CheatSheet da manipulação de polinômios no SymPy:
+
+variaveis = symbols(f'{simbolo}{primeiro_indice}:{ultimo_indice}' for variaveis_enumeradas in tuplas_char_int_int_passadas_pelo_usuario)
+
+f.monoms()      # Lista de monômios como tuplas de expoentes
+f.coeffs()      # Lista de coeficientes correspondentes
+f.terms()       # Lista de (monômio, coeficiente)
+f.degree()      # Grau total do polinômio
+f.degree(x)     # Grau em x
+f.degree_list() # Grau em cada variável
+
+f.LT()   # Leading Term (como (expoentes, coeficiente))
+f.LM()   # Leading Monomial (expoente do termo líder)
+f.LC()   # Leading Coefficient
+LT(f)    # f.LT(), mas como Poly
+LM(f)    # f.LM(), mas como Poly
+
+soma = f + g
+produto = f * g
+subtracao = f - g
+
+f % g == 0  # True se g divide f
+q, r = divmod(f, g)  # quociente e resto
+
+quocientes, resto = reduced(f, [F], x, y)  # Reduz f em relação a F
+G = groebner(F) # Calcula uma base de Gröbner de F
+
+expr = f.as_expr() # Como expressão, é possível tratar o polinômio como um valor, fazer cálculos com ele
