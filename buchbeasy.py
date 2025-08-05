@@ -18,6 +18,15 @@ class Buchberger_Algorithms():
     
     def criar_polinomios(self, *polinomios: str):
         return [self.criar_polinomio(p) for p in polinomios]
+    
+
+  ##### Funções Auxiliares
+  # Funções que organizam os cálculos feitos dentro de funções maiores
+
+    # S-Polinômio de p e q
+    def S(self, p: sp.Poly, q: sp.Poly):
+        mmc = sp.lcm(sp.LM(p), sp.LM(q)) # MMC(p_mon, q_mon)
+        return (mmc / sp.LT(p))*p - (mmc / sp.LT(q))*q # (m/p_top)p - (m/q_top)q
 
 
   ##### Funções de Alto Nível

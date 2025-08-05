@@ -1,6 +1,6 @@
-import buchberger as berg
+import buchberger as berger
 
-buch = berg.Buchberger_Algorithms()
+buch = berger.Buchberger_Algorithms()
 buch.set_variaveis('x y z')
 
 ### Teste 3: Reduções sucessivas

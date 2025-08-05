@@ -6,6 +6,7 @@ class Buchberger_Algorithms():
     def __init__(self):
         self.variaveis = '' # Variáveis do anel de polinômios atual
 
+
     
   ##### Funções da Classe 
   # Funções cujo objetivo é apenas facilitar a execução prática dos algorítmos
@@ -18,6 +19,7 @@ class Buchberger_Algorithms():
     
     def criar_polinomios(self, *polinomios: str):
         return [self.criar_polinomio(p) for p in polinomios]
+
 
 
   ##### Funções Auxiliares
@@ -79,29 +81,26 @@ class Buchberger_Algorithms():
             else:
                 # Redução terminou em um h != 0
                 return h
-            
-
-                
 
 
 
   ##### Funções de Alto Nível
   # Funções que encapsulam as funcionalidades visiveis ao usuário, que respondam as perguntas e façam as operações de seu interesse
     
-    # Responde se F é uma base de Gröbner ou não
+    # Responde se F é uma base de Gröbner ou não (Buchberger I)
     def is_grobner(self, F: list[sp.Poly]):
         # Iterando apenas triangular superior da matriz GxG, evitando assim sua diagonal
         for i in range(len(F)):
             for j in range(i+1, len(F)):
-                Q, r = sp.reduced(self.S(F[i], F[j]), F)
-                if not r.is_zero:
+                # Se pelo menos uma das reduções for diferente de zero, então não é Gröbner
+                if not self.reduz(self.S(F[i], F[j]), F).is_zero:
                     return False
-                Q, r = sp.reduced(self.S(F[j], F[i]), F)
-                if not r.is_zero:
+                if not self.reduz(self.S(F[j], F[i]), F).is_zero:
                     return False
+        #else, é Gröbner
         return True
     
-    # Calcula a base de Grobner reduzida de F
+    # Calcula a base de Grobner reduzida de F (Buchberger II)
     def grobner_reduzido(self, F: list[sp.Poly]):
         return sp.groebner(F, method='buchberger') # O método pode ser Buchberger (lento), F5 (otimizado) ou F5B (meio-termo)
     

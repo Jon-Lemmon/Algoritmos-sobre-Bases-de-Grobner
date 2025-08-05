@@ -1,18 +1,26 @@
 import buchbeasy
+import buchberger
 
-beasy = buchbeasy.Buchberger_Algorithms()
-beasy.set_variaveis('x y z')
+beasy  = buchbeasy.Buchberger_Algorithms()
+berger = buchberger.Buchberger_Algorithms()
 
-### Teste 1: Exercícios básicos
-# Testando os resultados de buchbeasy.py, observando se eles batem com os obtidos à mão
+variaveis = 'x y z'
+beasy.set_variaveis(variaveis)
+berger.set_variaveis(variaveis)
+
+### Teste 4: Exercícios básicos
+# Testando os resultados de buchberger.py, observando se eles batem com os obtidos com buchbeasy.py
 p1, p2 = beasy.criar_polinomios('x**2 - y', 'y**2')
 L = [p1, p2]
 
 print('O conjunto {x**2 - y, y**2} é uma base de Gröbner?')
-print('Resposta:', beasy.is_grobner(L) )
+print('Berger:', berger.is_grobner(L))
+print('Beasy: ', beasy.is_grobner(L) )
 print()
+'''
 print('O conjunto {x**2 - y, y**2} é uma base de Gröbner reduzida?')
-print('Resposta:', beasy.is_grobner_reduzido(L) )
+print('Berger:', berger.is_grobner_reduzido(L))
+print('Beasy: ', beasy.is_grobner_reduzido(L) )
 print()
 L_reduzido = beasy.grobner_reduzido(L)
 print('Base de Gröbner reduzida de {x**2 - y, y**2}:', L_reduzido )
@@ -30,3 +38,4 @@ I = [p4, p5]
 J = [p6, p7]
 print('Os ideais < x - y, x + y > e < x, y > são iguais?')
 print('Resposta:', beasy.sao_iguais(I, J) )
+'''
