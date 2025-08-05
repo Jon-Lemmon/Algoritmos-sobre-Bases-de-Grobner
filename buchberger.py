@@ -20,6 +20,42 @@ class Buchberger_Algorithms():
         return [self.criar_polinomio(p) for p in polinomios]
 
 
+  ##### Funções Auxiliares
+  # Funções que organizam os cálculos feitos dentro de funções maiores
+
+    # S-Polinômio de p e q
+    def S(self, p: sp.Poly, q: sp.Poly):
+        mmc = sp.lcm(sp.LM(p), sp.LM(q)) # MMC(p_mon, q_mon)
+        return (mmc / sp.LT(p))*p - (mmc / sp.LT(q))*q # (m/p_top)p - (m/q_top)q
+    
+    # p -> h mod d
+    def reduz_em_um_passo(self, p: sp.Poly, d: sp.Poly):
+        LT_d = d.LT() # (monomio, coeficiente)
+
+        # confere se LT_d divide algum termo de p
+        for monomio, coeficiente in p.terms():
+            # monom é uma tupla de expoentes
+            # LT_d[0] é o monômio líder de d (se comporta como lista de expoentes)
+            if all(m >= l for m, l in zip(monomio, LT_d[0])):
+                # Calcula o termo de novo em expressão que o SymPy saiba calcular
+                termo = 1
+                for exp, var in zip(monomio, self.variaveis):
+                    termo *= var**exp
+                termo *= coeficiente
+
+                # Transforma LT_d em Poly
+                LT_d = LT_d[1] * LT_d[0].as_expr()
+
+                # Retorna a redução
+                return p - (termo/LT_d)*d
+            # else, continua procurando nos termos de p
+        return False
+
+    # p -> h mod F
+    def reduz(self, p: sp.Poly, F: list[sp.Poly]):
+        pass
+
+
   ##### Funções de Alto Nível
   # Funções que encapsulam as funcionalidades visiveis ao usuário, que respondam as perguntas e façam as operações de seu interesse
     

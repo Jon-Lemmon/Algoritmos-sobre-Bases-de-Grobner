@@ -1,6 +1,6 @@
 CheatSheet da manipulação de polinômios no SymPy:
 
-variaveis = symbols(f'{simbolo}{primeiro_indice}:{ultimo_indice}' for variaveis_enumeradas in tuplas_char_int_int_passadas_pelo_usuario)
+variaveis = symbols(f'{simbolo}{primeiro_indice}:{ultimo_indice}' for variaveis_enumeradas in tuplas_(char,int,int)_passadas_pelo_usuario)
 
 f.monoms()      # Lista de monômios como tuplas de expoentes
 f.coeffs()      # Lista de coeficientes correspondentes
