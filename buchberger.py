@@ -31,8 +31,8 @@ class Buchberger_Algorithms():
     # p -> h mod d
     def reduz_em_um_passo(self, p: sp.Poly, d: sp.Poly):
         LT_d = d.LT() # (monomio, coeficiente)
-        print()
-        print('Reduzindo', p, 'módulo', d, ':')
+        
+        print('    Reduzindo', p, 'módulo', d, ':')
         # confere se LT_d divide algum termo de p
         for monomio, coeficiente in p.terms():
             # monom é uma tupla de expoentes
@@ -47,20 +47,42 @@ class Buchberger_Algorithms():
                 # Transforma LT_d em Poly
                 LT_d = LT_d[1] * LT_d[0].as_expr()
 
-                print('Encontrado:', termo, 'é divisível por', LT_d)
+                print('    Encontrado:', termo, 'é divisível por', LT_d)
 
                 # Retorna a redução
                 h = p - (termo/LT_d)*d
-                print('Retornando resultado:', h)
-                print()
+                print('    Retornando redução:', h)
+
+                print()                
                 return h
             # else, continua procurando nos termos de p
-        print(p, 'não é divisível por', d, '! Retornando Falso...')
+        print('   ', p, 'não é divisível por', d, '! Retornando False...')
+
+        print()
         return False
 
     # p -> h mod F
     def reduz(self, p: sp.Poly, F: list[sp.Poly]):
-        pass
+        # Aplica reduções a um passo até ser irredutível (0 ou não divisivel por nenhum d^top)
+        h = p
+        print('  Reduzindo', p, 'sucessivamente módulo', F, ':')
+        while True:
+            for d in F:
+                reducao = self.reduz_em_um_passo(h, d)
+                if reducao: # passo feito, prossegue para o próximo passo
+                    h = reducao
+                    break
+                elif isinstance(reducao, sp.Poly) and reducao.is_zero: # Redução terminou bem
+                    return reducao
+                #else reducao == False:
+                #   passo não feito, tenta próximo d
+            else:
+                # Redução terminou em um h != 0
+                return h
+            
+
+                
+
 
 
   ##### Funções de Alto Nível

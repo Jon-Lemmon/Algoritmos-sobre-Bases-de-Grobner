@@ -4,12 +4,10 @@ buch = beasy.Buchberger_Algorithms()
 buch.set_variaveis('x y z')
 
 ### Teste 1: Exercícios básicos
+# Testando os resultados de buchbeasy.py, observando se eles batem com os obtidos à mão
 p1, p2 = buch.criar_polinomios('x**2 - y', 'y**2')
 L = [p1, p2]
 
-print('Qual o S-Polinômio de x**2 - y e y**2 ?')
-print('Resposta:', buch.S(p1, p2) )
-print()
 print('O conjunto {x**2 - y, y**2} é uma base de Gröbner?')
 print('Resposta:', buch.is_grobner(L) )
 print()
