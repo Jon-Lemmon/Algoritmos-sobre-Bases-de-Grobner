@@ -37,6 +37,7 @@ class Buchberger_Algorithms():
         
         print('    Reduzindo', p, 'módulo', d, ':')
         # confere se LT_d divide algum termo de p
+        
         for monomio, coeficiente in p.terms():
             # monom é uma tupla de expoentes
             # LT_d[0] é o monômio líder de d (se comporta como lista de expoentes)
@@ -108,9 +109,6 @@ class Buchberger_Algorithms():
         
         i = 0
         while i < len(G):
-            # Deixa mônico
-            G[i] = G[i]/G[i].LT()[1]
-
             # Reduz módulo G - G[i]
             h = self.reduz(G[i], G[:i]+G[i+1:])
             
@@ -118,7 +116,8 @@ class Buchberger_Algorithms():
                 print('Descartando', G.pop(i), '...')
                 # quem tinha o índice i+1 agora vira i, então não precisamos acrescentar o valor de i
             else:
-                G[i] = h
+                # Deixa mônico
+                G[i] = sp.Poly( h / h.LT()[1], self.variaveis )
                 i += 1
         
         return G
@@ -128,6 +127,7 @@ class Buchberger_Algorithms():
         for g in G:
             if g.LT()[1] != 1: # Não é mônico
                 print(g, 'não é mônico; G não é reduzido!')
+                print()
                 return False
         #else:
         for i in range(len(G)):
@@ -135,15 +135,29 @@ class Buchberger_Algorithms():
                 h = self.reduz_em_um_passo(G[i], d)
                 if h is not False:
                     print(G[i], '-->>', h, ';', 'G não é reduzido!')
+                    print()
                     return False
         #else:
+        print(G, 'é reduzido.')
+        print()
         return True
     
     # Responde se o polonômio p pertence ao ideal I
     def pertence_ao_ideal(self, p: sp.Poly, I: list[sp.Poly]):
         I_grobner_reduzido = self.grobner_reduzido(I)
-        return sp.reduced(p, I_grobner_reduzido)[1].is_zero # [1] é o resto da redução. Se é o polinômio nulo, p pertence a I.
+        print('Reduzindo', p, 'sucessivamente módulo', I_grobner_reduzido, ':')
+        if self.reduz(p, I_grobner_reduzido).is_zero:
+            print(p, 'pertence a', I)
+            print()
+            return True
+        else:
+            print(p, 'não pertence a', I)
+            print()
+            return False
 
     # Responde se os conjuntos de polinômios I e J geram o mesmo ideal ou não
     def sao_iguais(self, I: list[sp.Poly], J: list[sp.Poly]):
-        return self.grobner_reduzido(I) == self.grobner_reduzido(J)
+        I_grobner_reduzido = self.grobner_reduzido(I)
+        J_grobner_reduzido = self.grobner_reduzido(J)
+        print('Comparando', I_grobner_reduzido, 'e', J_grobner_reduzido, '...')
+        return I_grobner_reduzido == J_grobner_reduzido

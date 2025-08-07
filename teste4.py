@@ -21,13 +21,12 @@ print('O conjunto {x**2 - y, y**2} é uma base de Gröbner reduzida?')
 print('Berger:', berger.is_grobner_reduzido(L))
 print('Beasy: ', beasy.is_grobner_reduzido(L) )
 print()
-L_reduzido = beasy.grobner_reduzido(L)
+L_reduzido = berger.grobner_reduzido(L)
 print('Base de Gröbner reduzida de {x**2 - y, y**2}:', L_reduzido )
 print('A base obtida é uma base de Gröbner reduzida?')
 print('Berger:', berger.is_grobner_reduzido(L_reduzido) )
 print('Beasy:', beasy.is_grobner_reduzido(L_reduzido) )
 print()
-'''
 p3 = berger.criar_polinomio('x**4 * y')
 print( p3 )
 print('O polinômio x**4 * y pertence ao ideal gerado por {x**2 - y, y**2}?')
@@ -38,7 +37,6 @@ p4, p5 = berger.criar_polinomios('x - y', 'x + y')
 p6, p7 = beasy.criar_polinomios('x', 'y')
 I = [p4, p5]
 J = [p6, p7]
-print('Os ideais < x - y, x + y > e < x, y > são iguais?')
+print('Os ideais gerados por [x - y, x + y] e [x, y] são iguais?')
 print('Berger:', berger.sao_iguais(I, J) )
 print('Beasy:', beasy.sao_iguais(I, J) )
-'''
