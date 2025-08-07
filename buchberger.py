@@ -1,3 +1,4 @@
+import copy
 import sympy as sp
 
 class Buchberger_Algorithms():
@@ -74,7 +75,7 @@ class Buchberger_Algorithms():
                 if reducao: # passo feito, prossegue para o próximo passo
                     h = reducao
                     break
-                elif isinstance(reducao, sp.Poly) and reducao.is_zero: # Redução terminou bem
+                elif reducao is not False and reducao.is_zero: # Redução terminou bem
                     return reducao
                 #else reducao == False:
                 #   passo não feito, tenta próximo d
@@ -102,11 +103,41 @@ class Buchberger_Algorithms():
     
     # Calcula a base de Grobner reduzida de F (Buchberger II)
     def grobner_reduzido(self, F: list[sp.Poly]):
-        return sp.groebner(F, method='buchberger') # O método pode ser Buchberger (lento), F5 (otimizado) ou F5B (meio-termo)
+        G = copy.deepcopy(F)
+        print('Reduzindo', G, ':')
+        
+        i = 0
+        while i < len(G):
+            # Deixa mônico
+            G[i] = G[i]/G[i].LT()[1]
+
+            # Reduz módulo G - G[i]
+            h = self.reduz(G[i], G[:i]+G[i+1:])
+            
+            if h.is_zero: # G[i] é figurinha repetida
+                print('Descartando', G.pop(i), '...')
+                # quem tinha o índice i+1 agora vira i, então não precisamos acrescentar o valor de i
+            else:
+                G[i] = h
+                i += 1
+        
+        return G
     
     # Responde se F é uma base de Gröbner reduzida ou não
     def is_grobner_reduzido(self, G: list[sp.Poly]):
-        return G == self.grobner_reduzido(G)
+        for g in G:
+            if g.LT()[1] != 1: # Não é mônico
+                print(g, 'não é mônico; G não é reduzido!')
+                return False
+        #else:
+        for i in range(len(G)):
+            for d in G[:i]+G[i+1:]:
+                h = self.reduz_em_um_passo(G[i], d)
+                if h is not False:
+                    print(G[i], '-->>', h, ';', 'G não é reduzido!')
+                    return False
+        #else:
+        return True
     
     # Responde se o polonômio p pertence ao ideal I
     def pertence_ao_ideal(self, p: sp.Poly, I: list[sp.Poly]):
