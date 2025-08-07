@@ -160,4 +160,4 @@ class Buchberger_Algorithms():
         I_grobner_reduzido = self.grobner_reduzido(I)
         J_grobner_reduzido = self.grobner_reduzido(J)
         print('Comparando', I_grobner_reduzido, 'e', J_grobner_reduzido, '...')
-        return I_grobner_reduzido == J_grobner_reduzido
+        return set(I_grobner_reduzido) == set(J_grobner_reduzido)
