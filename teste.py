@@ -8,7 +8,7 @@ variaveis = 'x y z'
 beasy.set_variaveis(variaveis)
 berger.set_variaveis(variaveis)
 
-### Teste 4: Exercícios básicos
+### Teste: Exercícios básicos
 # Testando os resultados de buchberger.py, observando se eles batem com os obtidos com buchbeasy.py
 p1, p2 = beasy.criar_polinomios('x**2 - y', 'y**2')
 L = [p1, p2]

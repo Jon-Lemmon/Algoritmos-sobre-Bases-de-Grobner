@@ -25,8 +25,8 @@ class Buchberger_Algorithms():
 
     # S-Polinômio de p e q
     def S(self, p: sp.Poly, q: sp.Poly):
-        mmc = sp.lcm(sp.LM(p), sp.LM(q)) # MMC(p_mon, q_mon)
-        return (mmc / sp.LT(p))*p - (mmc / sp.LT(q))*q # (m/p_top)p - (m/q_top)q
+        mmc = sp.lcm(sp.LM(p), sp.LM(q)) # MMC(LM(p), LM(q))
+        return (mmc / sp.LT(p))*p - (mmc / sp.LT(q))*q # (mmc/p_top)p - (mmc/q_top)q
 
 
   ##### Funções de Alto Nível

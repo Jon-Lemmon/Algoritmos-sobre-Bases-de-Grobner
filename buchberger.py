@@ -8,11 +8,11 @@ class Buchberger_Algorithms():
         self.variaveis = '' # Variáveis do anel de polinômios atual
 
 
-    
-  ##### Funções da Classe 
+
+  ##### Funções da Classe
   # Funções cujo objetivo é apenas facilitar a execução prática dos algorítmos
 
-    def set_variaveis(self, variaveis: str): # Formado da string: 'a b c1:4 x0:5'; Gera: a, b, c1, c2, c3, x0, x1, x2, x3, x4
+    def set_variaveis(self, variaveis: str): # Formato da string: 'a b c1:4 x0:5'; Gera: a, b, c1, c2, c3, x0, x1, x2, x3, x4
         self.variaveis = sp.symbols(variaveis)
     
     def criar_polinomio(self, polinomio: str): # Formato da string: '2*x0**2 - 8*x1 + (5/3)*x3**4'
@@ -28,8 +28,8 @@ class Buchberger_Algorithms():
 
     # S-Polinômio de p e q
     def S(self, p: sp.Poly, q: sp.Poly):
-        mmc = sp.lcm(sp.LM(p), sp.LM(q)) # MMC(p_mon, q_mon)
-        return (mmc / sp.LT(p))*p - (mmc / sp.LT(q))*q # (m/p_top)p - (m/q_top)q
+        mmc = sp.lcm(sp.LM(p), sp.LM(q)) # MMC(LM(p), LM(q))
+        return (mmc / sp.LT(p))*p - (mmc / sp.LT(q))*q # (mmc/LT(p))p - (mmc/LT(q))q
     
     # p -> h mod d
     def reduz_em_um_passo(self, p: sp.Poly, d: sp.Poly):
@@ -39,10 +39,10 @@ class Buchberger_Algorithms():
         # confere se LT_d divide algum termo de p
         
         for monomio, coeficiente in p.terms():
-            # monom é uma tupla de expoentes
-            # LT_d[0] é o monômio líder de d (se comporta como lista de expoentes)
-            if all(m >= l for m, l in zip(monomio, LT_d[0])):
-                # Calcula o termo de novo em expressão que o SymPy saiba calcular
+            # monomio é uma tupla de expoentes
+            # LT_d[0] é o monômio líder de d e se comporta como lista de expoentes
+            if all(m >= l for m, l in zip(monomio, LT_d[0])): # Se LT_d divide monomio ...
+                # Obtém o termo atual em expressão que o SymPy saiba calcular
                 termo = 1
                 for exp, var in zip(monomio, self.variaveis):
                     termo *= var**exp
@@ -57,7 +57,7 @@ class Buchberger_Algorithms():
                 h = p - (termo/LT_d)*d
                 print('    Retornando redução:', h)
 
-                print()                
+                print()
                 return h
             # else, continua procurando nos termos de p
         print('   ', p, 'não é divisível por', d, '! Retornando False...')
@@ -67,7 +67,7 @@ class Buchberger_Algorithms():
 
     # p -> h mod F
     def reduz(self, p: sp.Poly, F: list[sp.Poly]):
-        # Aplica reduções a um passo até ser irredutível (0 ou não divisivel por nenhum d^top)
+        # Aplica reduções a um passo até h ser irredutível (0 ou não divisivel por nenhum LT(d))
         h = p
         print('  Reduzindo', p, 'sucessivamente módulo', F, ':')
         while True:
@@ -87,7 +87,7 @@ class Buchberger_Algorithms():
 
 
   ##### Funções de Alto Nível
-  # Funções que encapsulam as funcionalidades visiveis ao usuário, que respondam as perguntas e façam as operações de seu interesse
+  # Funções que encapsulam as funcionalidades visiveis ao usuário, que resolvam as perguntas e operações de seu interesse
     
     # Responde se F é uma base de Gröbner ou não (Buchberger I)
     def is_grobner(self, F: list[sp.Poly]):

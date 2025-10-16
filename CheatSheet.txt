@@ -21,6 +21,7 @@ subtracao = f - g
 
 f % g == 0  # True se g divide f
 q, r = divmod(f, g)  # quociente e resto
+lcm(p, q)
 
 quocientes, resto = reduced(f, [F], x, y)  # Reduz f em relação a F
 G = groebner(F) # Calcula uma base de Gröbner de F
